@@ -22,6 +22,11 @@ gradlePlugin {
         create("easyRestRedocly") {
             id = "io.github.seokjun7410.easy-rest-redocly"
             implementationClass = "easyrest.redocly.EasyRestRedoclyPlugin"
+            displayName = "Easy Rest Redocly Plugin"
+            description = "Easy Redoc + OpenAPI Docs plugin, depends on easy-rest-redocly-lib"
+            website.set("https://github.com/seokjun7410/easy-rest-redocly")
+            vcsUrl.set("https://github.com/seokjun7410/easy-rest-redocly")
+            tags.set(listOf("restdocs", "openapi", "redoc", "documentation"))
         }
     }
 }
