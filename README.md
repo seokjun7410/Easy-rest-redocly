@@ -1,6 +1,6 @@
 
-1. [📘 easy-rest-redocly 소개](#-📘-easy-rest-redocly-소개)
-2. [✨ easy-rest-redocly 사용 시 장점](#2-✨-easy-rest-redocly-사용-시-장점)
+1. [📘 easy-rest-redocly 소개](#📘-easy-rest-redocly)
+2. [✨ easy-rest-redocly 사용 시 장점](#✨-easy-rest-redocly-사용-시-장점)
 3. [✨ 예시](#3-✨-예시)
 4. [🚀 설치 방법](#4-🚀-설치-방법)
 5. [🧪 플러그인 사용 예시 (build.gradle)](#5-🧪-플러그인-사용-예시-buildgradle)
