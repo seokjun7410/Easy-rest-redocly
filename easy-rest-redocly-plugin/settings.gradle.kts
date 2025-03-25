@@ -6,4 +6,4 @@
  */
 
 rootProject.name = "easy-rest-redocly-plugin"
-include("plugin")
+
