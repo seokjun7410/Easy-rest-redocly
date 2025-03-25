@@ -123,9 +123,9 @@ public enum UserRole {
     USER, ADMIN
 }
 ```
----
 
-## 🚀 설치 방법
+
+# 🚀 설치 방법
 
 ### 1. JitPack 레포지토리 추가
 
@@ -142,7 +142,6 @@ repositories {
 testImplementation 'com.github.seokjun7410.easy-restdocs:easy-rest-redocly:v0.0.5'
 ```
 
----
 
 ## 🧪 플러그인 사용 예시 (build.gradle)
 
@@ -169,7 +168,6 @@ apply plugin: 'io.github.seokjun7410.easy-rest-redocly'
 
 > `build.gradle`에 플러그인 적용 시 주의: `plugins {}` 블럭보다 `buildscript {}`가 먼저 와야 합니다.
 
----
 
 ## 🔧 사용 가능한 태스크
 
@@ -179,7 +177,6 @@ apply plugin: 'io.github.seokjun7410.easy-rest-redocly'
 | `fixAndBundle` | epages + redocly 연동 시 String 형식 손상 정리 + `redoc-cli bundle` 실행 |
 | `redocGenerationIntegration` | redocly API Doc 생성 (`makeOAS` + `fixAndBundle`)   |
 
----
 
 ## 🧰 Redoc CLI 설치 방법
 
@@ -201,11 +198,9 @@ redoc-cli --version
 redoc-cli bundle openapi-fixed.yaml
 ```
 
----
-
 # ✨주요 클래스 및 기능
 
-# 📌 1. `BaseDocs` 클래스
+### 📌 1. `BaseDocs` 클래스
 `BaseDocs`는 문서를 작성할 때 공통적으로 사용되는 기능들을 제공합니다.
 
 - **기본 설정**: REST 문서를 작성하기 위한 기본 정보를 설정할 수 있습니다.
@@ -232,7 +227,7 @@ public class UserDocs extends BaseDocs {
 }
 ```
 
-## 📌 2. `ParamBuilder` 클래스
+### 📌 2. `ParamBuilder` 클래스
 `ParamBuilder`를 이용하면 Query Parameter 및 Path Variable 문서화를 쉽게 정의할 수 있습니다.
 
 #### 사용 예시
@@ -248,7 +243,7 @@ QueryParametersSnippet querySnippet = paramBuilder.buildQueryParameters();
 PathParametersSnippet pathSnippet = paramBuilder.buildPathParameters();
 ```
 
-## 📌 3. Custom Annotation: `@DocsDescription`
+### 📌 3. Custom Annotation: `@DocsDescription`
 필드나 클래스에 직접 설명을 추가하여 문서화에 반영할 수 있습니다.
 
 #### 사용 예시
@@ -262,13 +257,13 @@ public class UserResponse {
     private String name;
 }
 ```
-## 📌 4. jakarta.validation.constraints 제약조건 문서화
+### 📌 4. jakarta.validation.constraints 제약조건 문서화
 
 이 라이브러리는 Spring REST Docs와 `javax.validation` 또는 `jakarta.validation`의 제약조건 어노테이션(`@NotNull`, `@Size` 등)을 리플렉션으로 자동 인식하여 문서화합니다.
 
 아래 코드 예시는 필드에 정의된 제약조건을 자동으로 읽어 설명 문서에 추가하는 기능을 보여줍니다:
 
-### DTO 예시
+#### DTO 예시
 ```java
 public class UserRequest {
 
@@ -279,12 +274,12 @@ public class UserRequest {
 }
 ```
 
-### 자동으로 생성된 문서 설명 예시
+#### 자동으로 생성된 문서 설명 예시
 ```
 사용자 이름 [Must not be null], [Size must be between 2 and 30]
 ```
 
-## 🚩 5. Enum  문서화
+### 🚩 5. Enum  문서화
 
 easy-rest-redocly는 Enum 타입 필드의 사용 가능한 값과 같은 제약사항을 자동으로 문서화에 포함합니다. 또한 사용자는 이러한 제약사항의 형식을 자유롭게 커스터마이징 할 수 있습니다.
 
@@ -293,7 +288,7 @@ easy-rest-redocly는 Enum 타입 필드의 사용 가능한 값과 같은 제약
 [USER], [ADMIN]
 ```
 
-## 🚩 6. Enum 및 jakarta.validation.constraints 포맷 커스터마이징
+### 🚩 6. Enum 및 jakarta.validation.constraints 포맷 커스터마이징
 사용자는 `DocsDefaultConfig` 인터페이스를 구현하여 원하는 형태로 변경할 수 있습니다:
 
 ```java
@@ -323,12 +318,12 @@ public class DocsConfig {
 ### 7. 자동 설정 (`EasyRestDocsAutoConfiguration`)
 Spring Boot의 자동 설정으로, 기본 문서화 설정이 자동 구성됩니다. 별도의 추가 설정 없이도 사용 가능합니다.
 
----
+
 
 ## 필수 설정 및 주의사항
 - 각 문서화 클래스는 반드시 `BaseDocs`를 상속받아 구현해야 합니다.
 
----
+
 ## 📝 License
 
 MIT License 기반입니다. epages/restdocs-api-spec 또한 MIT 라이선스를 따릅니다.
