@@ -51,7 +51,8 @@ class EasyRestRedoclyPlugin : Plugin<Project> {
                 outputFile.writeText(yaml.dump(data), Charsets.UTF_8)
 
                 project.exec {
-                    commandLine("npm", "redoc-cli", "bundle", outputFile.absolutePath)     // ✅ 절대 경로로 안전하게 전달
+                    environment("PATH", System.getenv("PATH") + ":/opt/homebrew/bin/redoc-cli")
+                    commandLine("redoc-cli", "bundle", outputFile.absolutePath)     // ✅ 절대 경로로 안전하게 전달
                 }
             }
         }
@@ -63,8 +64,8 @@ class EasyRestRedoclyPlugin : Plugin<Project> {
             dependsOn(fixAndBundle)
 
             val fixedFile = project.file("openapi-fixed.yaml") // ✅ 사용자 프로젝트 기준 경로
-
-            commandLine("npm", "redoc-cli", "bundle", fixedFile.absolutePath)
+            environment("PATH", System.getenv("PATH") + ":/opt/homebrew/bin/redoc-cli")
+            commandLine("redoc-cli", "bundle", fixedFile.absolutePath)
         }
     }
 
