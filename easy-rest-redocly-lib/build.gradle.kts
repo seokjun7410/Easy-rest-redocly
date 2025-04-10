@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.example"
-version = "0.1.1-SNAPSHOT"
+version = "0.1.2-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -56,7 +56,7 @@ publishing {
             }
             groupId = "com.easy-rest"
             artifactId = "easy-rest-redocly"
-            version = "0.1.1-SNAPSHOT"
+            version = "0.1.2-SNAPSHOT"
         }
     }
     repositories {
