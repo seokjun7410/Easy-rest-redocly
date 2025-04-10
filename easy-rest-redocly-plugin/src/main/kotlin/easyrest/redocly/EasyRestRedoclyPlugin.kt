@@ -50,10 +50,6 @@ class EasyRestRedoclyPlugin : Plugin<Project> {
 
                 outputFile.writeText(yaml.dump(data), Charsets.UTF_8)
 
-                project.exec {
-                    environment("PATH", System.getenv("PATH") + ":/opt/homebrew/bin/redoc-cli")
-                    commandLine("redoc-cli", "bundle", outputFile.absolutePath)     // ✅ 절대 경로로 안전하게 전달
-                }
             }
         }
 
@@ -64,9 +60,9 @@ class EasyRestRedoclyPlugin : Plugin<Project> {
             dependsOn(fixAndBundle)
 
             val fixedFile = project.file("openapi-fixed.yaml") // ✅ 사용자 프로젝트 기준 경로
-            environment("PATH", System.getenv("PATH") + ":/opt/homebrew/bin/redoc-cli")
-            commandLine("redoc-cli", "bundle", fixedFile.absolutePath)
+            commandLine("/opt/homebrew/bin/redoc-cli", "bundle", fixedFile.absolutePath)
         }
+
     }
 
     // 예제 JSON 수정 로직
