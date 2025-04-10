@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.example"
-version = "0.0.7-SNAPSHOT"
+version = "0.1.1-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -28,6 +28,7 @@ dependencies {
     implementation ("com.epages:restdocs-api-spec-mockmvc:0.18.2")
     implementation ("com.epages:restdocs-api-spec-restassured:0.18.2")
     implementation ("org.springframework.restdocs:spring-restdocs-restassured:3.0.1")
+    implementation ("org.springframework.boot:spring-boot-starter-validation:3.2.4")
 
     implementation("org.springframework.boot:spring-boot-autoconfigure:3.4.4")
 
@@ -55,7 +56,7 @@ publishing {
             }
             groupId = "com.easy-rest"
             artifactId = "easy-rest-redocly"
-            version = "0.0.7-SNAPSHOT"
+            version = "0.1.1-SNAPSHOT"
         }
     }
     repositories {
