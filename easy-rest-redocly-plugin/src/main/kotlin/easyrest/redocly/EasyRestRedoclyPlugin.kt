@@ -23,9 +23,9 @@ class EasyRestRedoclyPlugin : Plugin<Project> {
         project.extensions.extraProperties["snippetsDir"] = project.file("build/generated-snippets")
 
         // openapi3 실행 task (epages가 내부에서 정의하는 task)
-        val makeOAS = project.tasks.register("makeOAS", Exec::class.java) {
+        val makeOAS = project.tasks.register("makeOAS") {
             group = "automatic_documentation"
-            commandLine("gradle", "openapi3")
+            dependsOn("openapi3") // ✅ 여기서 실행 순서만 보장
         }
 
         // fix + redoc bundle task
