@@ -1,0 +1,219 @@
+openapi: 3.0.1
+info: {title: Easy-Rest-Redocly Example API, description: Example API demonstrating
+    Easy-Rest-Redocly library usage, version: 1.0.0}
+servers:
+- {url: 'http://localhost:8080'}
+tags: []
+paths:
+  /api/users:
+    get:
+      tags: [api]
+      summary: 사용자 목록 조회 API
+      description: 사용자 목록을 조회합니다. 이름 검색, 상태 필터링, 페이징을 지원합니다.
+      operationId: user-list
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content Type Header
+        required: false
+        schema: {type: string}
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/api-users982785267'}
+              examples:
+                user-list:
+                  value:
+                  - {id: 1, username: user1, email: user1@example.com, fullName: User
+                      One, age: 25, phoneNumber: 010-1111-1111, status: ACTIVE, createdAt: '2025-08-19T20:43:10.766547',
+                    updatedAt: '2025-09-18T20:43:10.766566'}
+                  - {id: 2, username: user2, email: user2@example.com, fullName: User
+                      Two, age: 30, phoneNumber: 010-2222-2222, status: ACTIVE, createdAt: '2025-08-29T20:43:10.766575',
+                    updatedAt: '2025-09-18T20:43:10.766577'}
+                  - {id: 3, username: user3, email: user3@example.com, fullName: User
+                      Three, age: 35, phoneNumber: 010-3333-3333, status: INACTIVE,
+                    createdAt: '2025-09-08T20:43:10.766581', updatedAt: '2025-09-18T20:43:10.766583'}
+    post:
+      tags: [api]
+      summary: 사용자 생성 API
+      description: 새로운 사용자를 생성합니다. 필수 정보(사용자명, 이메일, 비밀번호, 실명)를 입력받아 새 계정을 만듭니다.
+      operationId: user-create
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content Type Header
+        required: false
+        schema: {type: string}
+        example: application/json
+      requestBody:
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/api-users1719291577'}
+            examples:
+              user-create-validation-error:
+                value: {username: ab, email: invalid-email, password: null, fullName: null,
+                  age: null, phoneNumber: null}
+              user-create:
+                value: {username: testuser, email: test@example.com, password: password123,
+                  fullName: Test User, age: 25, phoneNumber: 010-1234-5678}
+      responses:
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/api-users-248051821'}
+              examples:
+                user-create-validation-error:
+                  value: {timestamp: '2025-09-18T11:43:11.197+00:00', status: 400,
+                    error: Bad Request, path: /api/users}
+        '201':
+          description: '201'
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/api-users-id58498100'}
+              examples:
+                user-create:
+                  value: {id: 1, username: testuser, email: test@example.com, fullName: Test
+                      User, age: 25, phoneNumber: 010-1234-5678, status: ACTIVE, createdAt: '2025-09-18T20:43:11.225152',
+                    updatedAt: '2025-09-18T20:43:11.225161'}
+  /api/users/{id}:
+    get:
+      tags: [api]
+      summary: 사용자 조회 API
+      description: 사용자 ID를 이용하여 특정 사용자의 상세 정보를 조회합니다.
+      operationId: user-get
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema: {type: string}
+      - name: Content-Type
+        in: header
+        description: Content Type Header
+        required: false
+        schema: {type: string}
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/api-users-id58498100'}
+              examples:
+                user-get:
+                  value: {id: 1, username: testuser, email: test@example.com, fullName: Test
+                      User, age: 25, phoneNumber: 010-1234-5678, status: ACTIVE, createdAt: '2025-08-19T20:43:11.146033',
+                    updatedAt: '2025-09-18T20:43:11.146041'}
+    put:
+      tags: [api]
+      summary: 사용자 정보 수정 API
+      description: 사용자 정보를 업데이트합니다. 부분 업데이트를 지원하며, 제공된 필드만 수정됩니다.
+      operationId: user-update
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema: {type: string}
+      - name: Content-Type
+        in: header
+        description: Content Type Header
+        required: false
+        schema: {type: string}
+        example: application/json
+      requestBody:
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/api-users-id734122981'}
+            examples:
+              user-update:
+                value: {email: newemail@example.com, fullName: Updated User, age: 30,
+                  phoneNumber: 010-9999-9999, status: ACTIVE}
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/api-users-id58498100'}
+              examples:
+                user-update:
+                  value: {id: 1, username: testuser, email: newemail@example.com,
+                    fullName: Updated User, age: 30, phoneNumber: 010-9999-9999, status: ACTIVE,
+                    createdAt: '2025-08-19T20:43:11.107192', updatedAt: '2025-09-18T20:43:11.107206'}
+    delete:
+      tags: [api]
+      summary: 사용자 삭제 API
+      description: 사용자를 삭제합니다. 삭제된 사용자 정보는 복구할 수 없습니다.
+      operationId: user-delete
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema: {type: string}
+      - name: Content-Type
+        in: header
+        description: Content Type Header
+        required: false
+        schema: {type: string}
+      responses:
+        '204': {description: '204'}
+components:
+  schemas:
+    api-users1719291577:
+      type: object
+      properties:
+        password: {type: string, description: '[Must not be blank], [Size must be
+            between 8 and 2147483647 inclusive], [사용자 비밀번호 (8자 이상)]'}
+        phoneNumber: {type: string, description: '[사용자 휴대폰 번호 (선택사항)]'}
+        fullName: {type: string, description: '[Must not be blank], [사용자 실명]'}
+        age: {type: number, description: '[사용자 나이 (선택사항)]'}
+        email: {type: string, description: '[Must be a well-formed email address],
+            [Must not be blank], [사용자 이메일 주소]'}
+        username: {type: string, description: '[Must not be blank], [Size must be
+            between 3 and 20 inclusive], [사용자명 (3-20자)]'}
+    api-users-248051821:
+      type: object
+      properties:
+        path: {type: string, description: 요청 경로}
+        error: {type: string, description: 에러 유형}
+        status: {type: number, description: HTTP 상태 코드}
+        timestamp: {type: string, description: 에러 발생 시간}
+    api-users-id734122981:
+      type: object
+      properties:
+        phoneNumber: {type: string, description: '[사용자 휴대폰 번호 (선택사항)]'}
+        fullName: {type: string, description: '[사용자 실명 (선택사항)]'}
+        age: {type: number, description: '[사용자 나이 (선택사항)]'}
+        email: {type: string, description: '[Must be a well-formed email address],
+            [사용자 이메일 주소 (선택사항)]'}
+        status: {type: string, description: '[사용자 상태 (선택사항)], [ACTIVE], [INACTIVE],
+            [BLOCKED], [DELETED]'}
+    api-users982785267:
+      type: array
+      items:
+        type: object
+        properties:
+          createdAt: {type: string, description: 계정 생성일시}
+          phoneNumber: {type: string, description: 사용자 휴대폰 번호}
+          fullName: {type: string, description: 사용자 실명}
+          id: {type: number, description: 사용자 고유 ID}
+          age: {type: number, description: 사용자 나이}
+          email: {type: string, description: 사용자 이메일 주소}
+          updatedAt: {type: string, description: 마지막 수정일시}
+          status: {type: string, description: 사용자 상태}
+          username: {type: string, description: 사용자명}
+    api-users-id58498100:
+      type: object
+      properties:
+        createdAt: {type: string, description: 계정 생성일시}
+        phoneNumber: {type: string, description: 사용자 휴대폰 번호}
+        fullName: {type: string, description: 사용자 실명}
+        id: {type: number, description: 사용자 고유 ID}
+        age: {type: number, description: 사용자 나이}
+        email: {type: string, description: 사용자 이메일 주소}
+        updatedAt: {type: string, description: 마지막 수정일시}
+        status: {type: string, description: 사용자 상태}
+        username: {type: string, description: 사용자명}

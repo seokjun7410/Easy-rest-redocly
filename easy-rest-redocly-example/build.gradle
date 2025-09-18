@@ -1,0 +1,71 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+        classpath 'com.github.seokjun7410.easy-restdocs:easy-rest-redocly-plugin:v0.1.4'
+    }
+}
+
+plugins {
+    id("java")
+    id("org.springframework.boot") version "3.3.4"
+    id("io.spring.dependency-management") version "1.1.4"
+    id("com.epages.restdocs-api-spec") version "0.18.2"
+    id("org.hidetake.swagger.generator") version "2.19.2"
+}
+
+group = "com.example"
+version = "0.1.0-SNAPSHOT"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+
+    // Spring Boot Starters
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    // H2 Database (예제용)
+    runtimeOnly("com.h2database:h2")
+
+    // JSON 처리
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+
+    // REST Docs Dependencies (needed for docs classes in main)
+    implementation("org.springframework.restdocs:spring-restdocs-core")
+    implementation("com.epages:restdocs-api-spec:0.18.2")
+    implementation 'com.github.seokjun7410.easy-restdocs:easy-rest-redocly:v0.1.4'
+
+    // Test Dependencies
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testImplementation("org.springframework.restdocs:spring-restdocs-restassured")
+    testImplementation("com.epages:restdocs-api-spec-mockmvc:0.18.2")
+    testImplementation("com.epages:restdocs-api-spec-restassured:0.18.2")
+    testImplementation("io.rest-assured:rest-assured:5.3.0")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+}
+
+// OpenAPI 3 generation configuration
+openapi3 {
+    setServer("http://localhost:8080")
+    title = "Easy-Rest-Redocly Example API"
+    description = "Example API demonstrating Easy-Rest-Redocly library usage"
+    version = "1.0.0"
+    format = "yaml"
+    outputFileNamePrefix = "openapi"
+}
+
+apply plugin: 'io.github.seokjun7410.easy-rest-redocly'
