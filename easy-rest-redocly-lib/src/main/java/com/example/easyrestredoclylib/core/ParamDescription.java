@@ -6,6 +6,7 @@ public final class ParamDescription {
 
 	private final String paramFieldName;
 	private final String description;
+	private boolean optional = false;
 
 	ParamDescription(String paramFieldName, String description) {
 		this.paramFieldName = paramFieldName;
@@ -18,6 +19,14 @@ public final class ParamDescription {
 
 	public String description() {
 		return description;
+	}
+
+	public boolean isOptional() {
+		return optional;
+	}
+
+	public void setOptional(boolean optional) {
+		this.optional = optional;
 	}
 
 	@Override

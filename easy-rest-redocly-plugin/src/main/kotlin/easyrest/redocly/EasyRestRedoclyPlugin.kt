@@ -34,8 +34,8 @@ class EasyRestRedoclyPlugin : Plugin<Project> {
             dependsOn(makeOAS)
 
             doLast {
-                val inputFile = project.file("build/api-spec/openapi.yaml")          // ✅ 루트 기준으로 경로 고정
-                val outputFile = project.file("openapi-fixed.yaml")                  // ✅ 루트 기준으로 경로 고정
+                val inputFile = project.file("build/api-spec/openapi.yaml")
+                val outputFile = project.file("openapi-fixed.yaml")
 
                 if (!inputFile.exists()) {
                     project.logger.error("❌ openapi.yaml not found at ${inputFile.absolutePath}")

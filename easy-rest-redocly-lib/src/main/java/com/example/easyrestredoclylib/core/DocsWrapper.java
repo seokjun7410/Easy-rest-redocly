@@ -15,12 +15,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
+import org.springframework.restdocs.snippet.Snippet;
 import org.springframework.restdocs.headers.RequestHeadersSnippet;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.RequestFieldsSnippet;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.PathParametersSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
+import org.springframework.restdocs.request.FormParametersSnippet;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 
 public class DocsWrapper {
@@ -121,12 +123,16 @@ public class DocsWrapper {
 	}
 
 	private List<FieldDescriptor> getFieldDescriptors(String prefix, Class<?> responseClass) {
+		return getFieldDescriptors(prefix, responseClass, 0);
+	}
 
+	private List<FieldDescriptor> getFieldDescriptors(String prefix, Class<?> responseClass, int depth) {
+		if (depth > 5) {
+			return new ArrayList<>();
+		}
 
 		Field[] fields = responseClass.getDeclaredFields();
 		List<FieldDescriptor> responseDescriptions = new ArrayList<>();
-		responseDescriptions.add(fieldWithPath("status").description("커스텀 상태 코드"));
-		responseDescriptions.add(fieldWithPath("responseMessage").description("커스텀 상태 코드"));
 		for (Field field : fields) {
 			DocsDescription descriptionAnnotation = field.getAnnotation(DocsDescription.class);
 			String fieldName = "";
@@ -134,15 +140,15 @@ public class DocsWrapper {
 
 			Class<?> fieldType = field.getType();
 			Package packagePath = field.getType().getPackage();
-			if (packagePath == null || packagePath.getName().startsWith("java")) {
+			if (packagePath == null || packagePath.getName().startsWith("java") || fieldType.isEnum()) {
 				fieldName = prefix + field.getName();
 				if (descriptionAnnotation != null) {
 					descriptionValue = descriptionAnnotation.value();
 				}
-				responseDescriptions.add(fieldWithPath("response."+fieldName).description(descriptionValue));
+				responseDescriptions.add(fieldWithPath(fieldName).description(descriptionValue));
 			} else {
 				List<FieldDescriptor> fieldDescriptors = getFieldDescriptors(field.getName() + ".",
-					fieldType);
+					fieldType, depth + 1);
 				responseDescriptions.addAll(fieldDescriptors);
 			}
 		}
@@ -150,10 +156,11 @@ public class DocsWrapper {
 	}
 
 	private List<FieldDescriptor> getListFieldDescriptors(String prefix, Class<?> responseClass,int depth) {
+		if (depth > 5) {
+			return new ArrayList<>();
+		}
 		Field[] fields = responseClass.getDeclaredFields();
 		List<FieldDescriptor> responseDescriptions = new ArrayList<>();
-		responseDescriptions.add(fieldWithPath("status").description("커스텀 상태 코드"));
-		responseDescriptions.add(fieldWithPath("responseMessage").description("응답 메시지"));
 		for (Field field : fields) {
 
 
@@ -174,9 +181,8 @@ public class DocsWrapper {
 				packagePathName = getRootPackage(field);
 				fieldType = getRootFieldType(field);
 			}
-			if (packagePath == null || (packagePathName.startsWith("java"))) {
+			if (packagePath == null || (packagePathName.startsWith("java")) || fieldType.isEnum()) {
 				fieldName = "[]." + fieldName;
-				fieldName = "response" + fieldName;
 				if (descriptionAnnotation != null) {
 					descriptionValue = descriptionAnnotation.value();
 				}
@@ -250,6 +256,65 @@ public class DocsWrapper {
 	}
 
 	public RestDocumentationFilter buildRestDocumentationFilter(
+		String identifier,
+		String description,
+		RequestHeadersSnippet requestHeadersSnippet,
+		String summary,
+		RequestFieldsSnippet requestFieldsSnippet,
+		ResponseFieldsSnippet responseFieldsSnippet,
+		QueryParametersSnippet queryParametersSnippet,
+		PathParametersSnippet pathParametersSnippet,
+		FormParametersSnippet formParametersSnippet) {
+
+		// Build list of non-null snippets
+		List<Snippet> snippets = new ArrayList<>();
+		snippets.add(requestHeadersSnippet);
+
+		if (requestFieldsSnippet != null) {
+			snippets.add(requestFieldsSnippet);
+		}
+		if (responseFieldsSnippet != null) {
+			snippets.add(responseFieldsSnippet);
+		}
+		if (queryParametersSnippet != null) {
+			snippets.add(queryParametersSnippet);
+		}
+		if (pathParametersSnippet != null) {
+			snippets.add(pathParametersSnippet);
+		}
+		if (formParametersSnippet != null) {
+			snippets.add(formParametersSnippet);
+		}
+
+		return RestAssuredRestDocumentationWrapper.document(
+			identifier,
+			description,
+			summary,
+			snippets.toArray(new Snippet[0])
+		);
+	}
+
+	// Keep the old method for backward compatibility
+	public RestDocumentationFilter buildRestDocumentationFilter(
+		String identifier,
+		String description,
+		RequestHeadersSnippet requestHeadersSnippet,
+		String summary,
+		RequestFieldsSnippet requestFieldsSnippet,
+		ResponseFieldsSnippet responseFieldsSnippet,
+		QueryParametersSnippet queryParametersSnippet,
+		PathParametersSnippet pathParametersSnippet) {
+
+		return buildRestDocumentationFilter(
+			identifier, description, requestHeadersSnippet, summary,
+			requestFieldsSnippet, responseFieldsSnippet,
+			queryParametersSnippet, pathParametersSnippet, null
+		);
+	}
+
+	// Legacy complex method - keeping for compatibility but marking as deprecated
+	@Deprecated
+	public RestDocumentationFilter buildRestDocumentationFilterLegacy(
 		String identifier,
 		String description,
 		RequestHeadersSnippet requestHeadersSnippet,

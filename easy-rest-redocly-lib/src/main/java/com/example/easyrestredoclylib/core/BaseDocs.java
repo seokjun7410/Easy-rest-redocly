@@ -7,6 +7,7 @@ import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
 import org.springframework.restdocs.headers.RequestHeadersSnippet;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import java.util.Optional;
 
 public abstract class BaseDocs {
 
@@ -16,37 +17,17 @@ public abstract class BaseDocs {
 	public BaseDocs() {
 		config = DocsConfigRegistry.get();
 
-		if (getRequestClass() != null && getResponseClass() != null) {
-			builder = new RestAssuredRestDocumentationBuilder(getIdentifier(), getDescription(),
-				getSummary())
-				.requestHeader(config.globalDefaultHeaderSpec())
-				.addRequest(getRequestClass(),config)
-				.addResponse(getResponseClass());
-		} else if (getRequestClass() != null && getListResponseClass() != null) {
-			builder = new RestAssuredRestDocumentationBuilder(getIdentifier(), getDescription(),
-				getSummary())
-				.requestHeader(config.globalDefaultHeaderSpec())
-				.addRequest(getRequestClass(),config)
-				.addListResponse(getListResponseClass());
-		} else if (getListResponseClass() != null) {
-			builder = new RestAssuredRestDocumentationBuilder(getIdentifier(), getDescription(),
-				getSummary())
-				.requestHeader(config.globalDefaultHeaderSpec())
-				.addListResponse(getListResponseClass());
-		} else if (getResponseClass() != null) {
-			builder = new RestAssuredRestDocumentationBuilder(getIdentifier(), getDescription(),
-				getSummary())
-				.requestHeader(config.globalDefaultHeaderSpec())
-				.addResponse(getResponseClass());
-		} else if (getRequestClass() != null) {
-			builder = new RestAssuredRestDocumentationBuilder(getIdentifier(), getDescription(),
-				getSummary())
-				.requestHeader(config.globalDefaultHeaderSpec())
-				.addRequest(getRequestClass(),config);
-		}   else {
-			builder = new RestAssuredRestDocumentationBuilder(getIdentifier(), getDescription(),
-				getSummary())
-				.requestHeader(config.globalDefaultHeaderSpec());
+		builder = new RestAssuredRestDocumentationBuilder(getIdentifier(), getDescription(), getSummary())
+			.requestHeader(config.globalDefaultHeaderSpec());
+
+		// Add request documentation if present
+		getRequestClass().ifPresent(requestClass -> builder.addRequest(requestClass, config));
+
+		// Add response documentation - prioritize list response over single response
+		if (getListResponseClass().isPresent()) {
+			builder.addListResponse(getListResponseClass().get());
+		} else {
+			getResponseClass().ifPresent(builder::addResponse);
 		}
 	}
 
@@ -56,12 +37,17 @@ public abstract class BaseDocs {
 
 	public abstract String getSummary();
 
-	public Class<?> getRequestClass(){
-		return null;
+	public Optional<Class<?>> getRequestClass(){
+		return Optional.empty();
 	}
 
-	public abstract Class<?> getResponseClass();
-	public abstract Class<?> getListResponseClass();
+	public Optional<Class<?>> getResponseClass() {
+		return Optional.empty();
+	}
+
+	public Optional<Class<?>> getListResponseClass() {
+		return Optional.empty();
+	}
 
 
 	public RestDocumentationFilter successFilter() {
@@ -88,6 +74,14 @@ public abstract class BaseDocs {
 
 	public ParamBuilder paramBuilder() {
 		return new ParamBuilder();
+	}
+
+	public FormParamBuilder formParamBuilder() {
+		return new FormParamBuilder();
+	}
+
+	public ErrorResponseDocs errorResponseBuilder() {
+		return new ErrorResponseDocs();
 	}
 
 }

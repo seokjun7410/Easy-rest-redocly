@@ -9,6 +9,16 @@
 - 유지보수가 쉬워집니다.
 - 자동으로 Redoc 기반의 예쁜 HTML 문서를 제공합니다.
 
+## 🆕 v1.1.0 새로운 기능들
+
+- **더 유연한 BaseDocs**: null 반환 강제 제거로 클라이언트 친화적 API 제공
+- **Form Parameter 지원**: multipart/form-data 및 application/x-www-form-urlencoded 문서화
+- **향상된 에러 응답 문서화**: HTTP 상태 코드별 에러 응답 자동 문서화
+- **선택적 파라미터 지원**: Query Parameter, Path Variable, Form Parameter의 optional 설정
+- **개선된 빌더 패턴**: 간소화된 조건부 로직으로 더 나은 성능과 가독성
+
+📖 **새로운 기능 사용법**: [EXAMPLES.md](./EXAMPLES.md)에서 모든 새로운 기능의 사용 예시를 확인하세요.
+
 # ✨ 예시
 
 다음은 많은 필드를 가진 복잡한 DTO와 Enum 타입 필드를 문서화할 때 순수 REST Docs와 easy-rest-redocly의 차이를 보여줍니다.
@@ -162,6 +172,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.epages.restdocs-api-spec' version '0.19.0' // easy-rest-redocly는 epages.restdocs-api-spec에 gradle task를 사용하기 때문에 필수적으로 사용해야 합니다.
 }
+
+implementation 'com.github.seokjun7410.easy-restdocs:easy-rest-redocly:v0.1.3'
 
 apply plugin: 'io.github.seokjun7410.easy-rest-redocly'
 ```

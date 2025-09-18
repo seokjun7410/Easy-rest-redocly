@@ -6,6 +6,7 @@ import org.springframework.restdocs.payload.RequestFieldsSnippet;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.PathParametersSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
+import org.springframework.restdocs.request.FormParametersSnippet;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 
 public class RestAssuredRestDocumentationBuilder extends RestDocumentationWrapper {
@@ -16,6 +17,7 @@ public class RestAssuredRestDocumentationBuilder extends RestDocumentationWrappe
 	private ResponseFieldsSnippet responseFieldsSnippet = null;
 	private QueryParametersSnippet queryParametersSnippet = null;
 	private PathParametersSnippet pathParametersSnippet = null;
+	private FormParametersSnippet formParametersSnippet = null;
 
 	private final String identifier;
 	private final String description;
@@ -57,6 +59,11 @@ public class RestAssuredRestDocumentationBuilder extends RestDocumentationWrappe
 		return this;
 	}
 
+	public RestAssuredRestDocumentationBuilder addFormParam(FormParametersSnippet snippet) {
+		formParametersSnippet = snippet;
+		return this;
+	}
+
 	public RestDocumentationFilter build() {
 		if (identifier == null)
 			throw new NullPointerException("identifier 이(가) null일 수 없습니다.");
@@ -75,7 +82,8 @@ public class RestAssuredRestDocumentationBuilder extends RestDocumentationWrappe
 			requestFieldsSnippet,
 			responseFieldsSnippet,
 			queryParametersSnippet,
-			pathParametersSnippet
+			pathParametersSnippet,
+			formParametersSnippet
 		);
 	}
 }

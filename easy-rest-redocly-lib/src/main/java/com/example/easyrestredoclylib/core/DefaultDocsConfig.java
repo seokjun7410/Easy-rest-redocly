@@ -15,14 +15,15 @@ public class DefaultDocsConfig implements DocsDefaultConfig {
 	@Override
 	public RequestHeadersSnippet globalDefaultHeaderSpec() {
 		return requestHeaders(
-			headerWithName(HttpHeaders.CONTENT_TYPE).description("Content Type Header"));
+			headerWithName(HttpHeaders.CONTENT_TYPE).optional().description("Content Type Header"));
 	}
 
 	@Override
 	public ResponseFieldsSnippet defaultExceptionResponseSpec() {
-		return responseFields(fieldWithPath("responseMessage").description("에러 이름"))
-			.and(fieldWithPath("status").description("http status value"))
-			.and(fieldWithPath("response").description("오류에 대한 메시지"));
+		return responseFields(fieldWithPath("timestamp").description("에러 발생 시간"))
+			.and(fieldWithPath("status").description("HTTP 상태 코드"))
+			.and(fieldWithPath("error").description("에러 유형"))
+			.and(fieldWithPath("path").description("요청 경로"));
 	}
 
 	@Override

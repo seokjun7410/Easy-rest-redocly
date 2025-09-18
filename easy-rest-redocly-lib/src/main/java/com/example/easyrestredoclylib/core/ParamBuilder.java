@@ -19,6 +19,13 @@ public class ParamBuilder {
 		return this;
 	}
 
+	public ParamBuilder param(String name, String description, boolean optional) {
+		ParamDescription paramDesc = new ParamDescription(name, description);
+		paramDesc.setOptional(optional);
+		params.add(paramDesc);
+		return this;
+	}
+
 	public QueryParametersSnippet buildQueryParameters() {
 		ParameterDescriptor[] parameterDescriptors = getParameterDescriptors();
 		return queryParameters(parameterDescriptors);
@@ -32,8 +39,12 @@ public class ParamBuilder {
 	protected ParameterDescriptor[] getParameterDescriptors() {
 		return params.stream()
 			.map(each -> {
-				return RequestDocumentation.parameterWithName(each.paramFieldName())
+				ParameterDescriptor descriptor = RequestDocumentation.parameterWithName(each.paramFieldName())
 					.description(each.description());
+				if (each.isOptional()) {
+					descriptor = descriptor.optional();
+				}
+				return descriptor;
 			}).toArray(ParameterDescriptor[]::new);
 	}
 
