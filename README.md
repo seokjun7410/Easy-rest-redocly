@@ -1,6 +1,6 @@
 # easy-rest-redocly
 - easy-rest-redocly는 REST Docs 문서를 리플렉션 기반으로 쉽게 작성할 수 있도록 도와주며, 작성된 문서를 Redocly-UI를 통해 가독성 높게 렌더링해주는 도구입니다.
-- [easy-rest-redocly document](https://app.gitbook.com/invite/YYAy8iCEqvl69Y8H5b8a/4a1DR9uUNmyjAEsmRxRZ)
+- [document](https://easy-rest-redocly.gitbook.io/easy/)
 
 ## REST Docs VS easy-rest-redocly
 다음은 많은 필드를 가진 복잡한 DTO와 Enum 타입 필드를 문서화할 때 순수 REST Docs와 easy-rest-redocly의 차이를 보여줍니다.
